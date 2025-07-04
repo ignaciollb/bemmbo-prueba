@@ -1,5 +1,5 @@
 import type { Invoice } from "../models/invoice";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface InjectConfirmationModalProps {
   open: boolean;
@@ -17,6 +17,18 @@ export default function InjectConfirmationModal({
   onConfirm,
 }: InjectConfirmationModalProps) {
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [open]);
+
   if (!open) return null;
 
   const totalPages = Math.ceil(invoices.length / ENTRIES_PER_PAGE);
