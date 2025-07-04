@@ -113,7 +113,7 @@ export default function InvoicesList() {
       <FilterBar value={filters} onChange={setFilters} />
       <div className="flex justify-end mb-4 mt-4">
         <button
-          className={`px-6 py-2 rounded-lg transition-colors ${
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
             selected.length === 0 || injecting
               ? "bg-gray-400 text-white cursor-not-allowed"
               : "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"

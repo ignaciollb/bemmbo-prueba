@@ -46,7 +46,7 @@ export default function FilterBar({ value, onChange }: FilterBarProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-t-lg border-b border-gray-200">
+    <div className="flex flex-wrap items-center gap-4 py-4 bg-white rounded-t-lg border-b border-gray-200">
       <input
         type="text"
         placeholder="Buscar por nombre..."
@@ -96,7 +96,7 @@ export default function FilterBar({ value, onChange }: FilterBarProps) {
       </div>
       <button
         type="button"
-        className="ml-auto px-4 py-2 rounded bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200"
+        className="ml-auto px-6 py-2 rounded-lg font-semibold transition-colors bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200"
         onClick={handleClear}
       >
         Limpiar
