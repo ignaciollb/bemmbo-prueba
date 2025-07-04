@@ -101,15 +101,15 @@ export default function InjectConfirmationModal({
             </button>
           </div>
         )}
-        <div className="flex justify-end gap-2 border-t px-6 py-4">
+        <div className="flex justify-end gap-4 border-t px-6 py-4">
           <button
-            className="px-4 py-2 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+            className="px-6 py-2 rounded-lg font-semibold transition-colors border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
             onClick={onClose}
           >
             Cancelar
           </button>
           <button
-            className="px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800"
+            className="px-6 py-2 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
             onClick={onConfirm}
           >
             Confirmar
