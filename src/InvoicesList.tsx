@@ -134,6 +134,7 @@ export default function InvoicesList() {
         invoices={selectedInvoices}
         onClose={() => setShowModal(false)}
         onConfirm={handleModalConfirm}
+        loading={injecting}
       />
     </div>
   );
