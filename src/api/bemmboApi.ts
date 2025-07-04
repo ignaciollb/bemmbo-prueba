@@ -11,7 +11,7 @@ async function apiFetch(endpoint: string, options: RequestOptions = {}) {
     ...(options.headers as Record<string, string>),
   };
   if (options.auth && AUTH_TOKEN) {
-    headers["Authorization"] = `Bearer ${AUTH_TOKEN}`;
+    headers["Authorization"] = `${AUTH_TOKEN}`;
   }
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
