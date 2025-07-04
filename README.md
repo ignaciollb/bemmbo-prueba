@@ -1,5 +1,10 @@
 # Recruiting Frontend Test
 
+
+**Production (API calls)**: https://bemmbo-prueba.vercel.app/
+
+**Staging (Mock Data)**: https://bemmbo-prueba-stg.vercel.app/
+
 This project is a technical test for Bemmbo, featuring a modern React + TypeScript frontend for managing and injecting invoices. It demonstrates best practices in UI/UX, code organization, and API integration.
 
 ## Features
