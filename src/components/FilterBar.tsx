@@ -50,7 +50,7 @@ export default function FilterBar({ value, onChange }: FilterBarProps) {
       <input
         type="text"
         placeholder="Buscar por nombre..."
-        className="border rounded px-3 py-2 text-sm w-56"
+        className="px-6 py-2 rounded-lg font-semibold transition-colors text-sm border border-gray-300 focus:border-blue-400 focus:outline-none"
         value={value.name}
         onChange={(e) => onChange({ ...value, name: e.target.value })}
       />
