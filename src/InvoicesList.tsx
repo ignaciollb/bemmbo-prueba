@@ -38,16 +38,19 @@ export default function InvoicesList() {
     setInjecting(true);
     try {
       await injectInvoices(selected);
-      setInvoices((prev) =>
-        prev.map((inv) =>
-          selected.includes(inv.id) ? { ...inv, injected: true } : inv
+      // update the invoices list state for the new injected invoices
+      setInvoices((previousInvoices) =>
+        previousInvoices.map((invoice) =>
+          selected.includes(invoice.id)
+            ? { ...invoice, injected: true }
+            : invoice
         )
       );
       setSelected([]);
-    } catch (err: unknown) {
-      let message = "Unknown error";
-      if (err instanceof Error) message = err.message;
-      alert("Error injecting invoices: " + message);
+    } catch (error: unknown) {
+      let errorMessage = "Unknown error";
+      if (error instanceof Error) errorMessage = error.message;
+      alert("Error injecting invoices: " + errorMessage);
     } finally {
       setInjecting(false);
     }
