@@ -4,6 +4,7 @@ import type { Invoice } from "./models/invoice";
 import InvoicesTable from "./components/InvoicesTable";
 import FilterBar from "./components/FilterBar";
 import type { FilterState } from "./components/FilterBar";
+import InjectConfirmationModal from "./components/InjectConfirmationModal";
 // import Pagination from "./components/Pagination";
 
 export default function InvoicesList() {
@@ -17,6 +18,7 @@ export default function InvoicesList() {
     currencies: [],
     injectionStatus: [],
   });
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getInvoices()
@@ -40,24 +42,26 @@ export default function InvoicesList() {
     );
   };
 
-  const handleInject = async () => {
+  const handleInject = () => {
     if (selected.length === 0 || injecting) return;
+    setShowModal(true);
+  };
+
+  const handleModalConfirm = async () => {
     setInjecting(true);
     try {
       await injectInvoices(selected);
-      // update the invoices list state for the new injected invoices
-      setInvoices((previousInvoices) =>
-        previousInvoices.map((invoice) =>
-          selected.includes(invoice.id)
-            ? { ...invoice, injected: true }
-            : invoice
+      setInvoices((prev) =>
+        prev.map((inv) =>
+          selected.includes(inv.id) ? { ...inv, injected: true } : inv
         )
       );
       setSelected([]);
-    } catch (error: unknown) {
-      let errorMessage = "Unknown error";
-      if (error instanceof Error) errorMessage = error.message;
-      alert("Error injecting invoices: " + errorMessage);
+      setShowModal(false);
+    } catch (err: unknown) {
+      let message = "Unknown error";
+      if (err instanceof Error) message = err.message;
+      alert("Error injecting invoices: " + message);
     } finally {
       setInjecting(false);
     }
@@ -98,6 +102,8 @@ export default function InvoicesList() {
     return true;
   });
 
+  const selectedInvoices = invoices.filter((inv) => selected.includes(inv.id));
+
   if (loading) return <div>Loading invoices...</div>;
   if (error) return <div>Error: {error}</div>;
   if (invoices.length === 0) return <div>No invoices found.</div>;
@@ -122,6 +128,12 @@ export default function InvoicesList() {
         invoices={filteredInvoices}
         selected={selected}
         onSelect={toggleInvoiceSelection}
+      />
+      <InjectConfirmationModal
+        open={showModal}
+        invoices={selectedInvoices}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleModalConfirm}
       />
     </div>
   );
