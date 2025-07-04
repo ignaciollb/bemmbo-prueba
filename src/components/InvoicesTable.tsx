@@ -24,13 +24,47 @@ export default function InvoicesTable({
     page * ENTRIES_PER_PAGE
   );
 
+  // Only non-injected invoices are selectable (across all pages)
+  const allSelectableIds = invoices
+    .filter((inv) => !inv.injected)
+    .map((inv) => inv.id);
+  const allSelected =
+    allSelectableIds.length > 0 &&
+    allSelectableIds.every((id) => selected.includes(id));
+  const selectedCount = allSelectableIds.filter((id) =>
+    selected.includes(id)
+  ).length;
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      // Deselect all
+      allSelectableIds.forEach((id) => onSelect(id));
+    } else {
+      // Select all
+      allSelectableIds.forEach((id) => {
+        if (!selected.includes(id)) onSelect(id);
+      });
+    }
+  };
+
   return (
     <div>
       <div className="overflow-x-auto rounded-lg shadow">
         <table className="min-w-full bg-white">
           <thead className="bg-gray-100">
             <tr className="text-left border-b">
-              <th className="p-4"></th>
+              <th className="p-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="accent-blue-600 w-4 h-4"
+                    checked={allSelected}
+                    onChange={handleSelectAll}
+                    disabled={allSelectableIds.length === 0}
+                  />
+                  <span className="text-xs text-gray-600">{selectedCount}</span>
+                </div>
+              </th>
               <th className="p-4 font-semibold">Emisor</th>
               <th className="p-4 font-semibold">Monto</th>
               <th className="p-4 font-semibold">Moneda</th>
