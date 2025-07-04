@@ -42,26 +42,41 @@ export async function injectInvoices(
     return Promise.resolve({ success: true, injected: invoiceIds });
   }
 
-  while (true) {
-    try {
-      return await apiFetch("/invoices/inject", {
-        method: "POST",
-        auth: true,
-        body: JSON.stringify({ invoiceIds }),
-      });
-    } catch (error: unknown) {
-      // If error message contains 500, retry indefinitely
-      if (
-        error instanceof Error &&
-        typeof error.message === "string" &&
-        error.message.includes("500")
-      ) {
-        // Add delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        continue;
+  const BATCH_SIZE = 25;
+  let allInjected: string[] = [];
+  let allSuccess = true;
+
+  for (let i = 0; i < invoiceIds.length; i += BATCH_SIZE) {
+    const batch = invoiceIds.slice(i, i + BATCH_SIZE);
+    while (true) {
+      try {
+        const result = await apiFetch("/invoices/inject", {
+          method: "POST",
+          auth: true,
+          body: JSON.stringify({ invoiceIds: batch }),
+        });
+        if (result.success && Array.isArray(result.injected)) {
+          allInjected = allInjected.concat(result.injected);
+        } else {
+          allSuccess = false;
+        }
+        break;
+      } catch (error: unknown) {
+        // If error message contains 500, retry indefinitely
+        if (
+          error instanceof Error &&
+          typeof error.message === "string" &&
+          error.message.includes("500")
+        ) {
+          // Add delay before retrying
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          continue;
+        }
+        // For other errors, throw immediately
+        throw error;
       }
-      // For other errors, throw immediately
-      throw error;
     }
   }
+
+  return { success: allSuccess, injected: allInjected };
 }
