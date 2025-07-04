@@ -12,14 +12,20 @@ export default function InvoiceRow({
   selected,
   onSelect,
 }: InvoiceRowProps) {
+  const isInjected = invoice.injected ?? false;
   return (
-    <tr className="border-b border-gray-300 hover:bg-gray-50 transition-colors">
+    <tr
+      className={`border-b border-gray-300 hover:bg-gray-50 transition-colors ${
+        isInjected ? "opacity-60 cursor-not-allowed" : ""
+      }`}
+    >
       <td className="p-4">
         <input
           type="checkbox"
           checked={selected}
-          onChange={() => onSelect(invoice.id)}
+          onChange={() => !isInjected && onSelect(invoice.id)}
           className="accent-blue-600 w-4 h-4"
+          disabled={isInjected}
         />
       </td>
       <td className="p-4">{invoice.receiverName}</td>
@@ -31,7 +37,7 @@ export default function InvoiceRow({
       </td>
       <td className="p-4">{invoice.currency}</td>
       <td className="p-4">
-        <InjectedStatusIcon injected={invoice.injected ?? false} />
+        <InjectedStatusIcon injected={isInjected} />
       </td>
     </tr>
   );
